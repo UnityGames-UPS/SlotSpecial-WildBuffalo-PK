@@ -14,6 +14,7 @@ public class PayoutCalculation : MonoBehaviour
     private Transform LineContainer;
     [SerializeField]
     private GameObject Line_Prefab;
+    internal List<int> DontDestroyLines = new List<int>();
 
     [SerializeField]
     private Vector2 InitialLinePosition = new Vector2(-315, 100);

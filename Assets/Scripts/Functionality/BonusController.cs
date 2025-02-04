@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using Best.SocketIO;
 
 public class BonusController : MonoBehaviour
 {
@@ -16,7 +17,11 @@ public class BonusController : MonoBehaviour
     [SerializeField]
     private TMP_Text[] Bonus_Text;
     [SerializeField]
-    private GameObject Bonus_Object;
+    private CanvasGroup main_Bonus_Object;
+    [SerializeField]
+    private CanvasGroup Bonus_Info_Wheel;
+    [SerializeField]
+    private GameObject Bonus_Info_Group;
     [SerializeField]
     private SlotBehaviour slotManager;
     [SerializeField]
@@ -24,7 +29,7 @@ public class BonusController : MonoBehaviour
     [SerializeField]
     private GameObject PopupPanel;
     [SerializeField]
-    private Transform Win_Transform;
+    private TMP_Text Win_Text;
     [SerializeField]
     private Transform Loose_Transform;
     [SerializeField]
@@ -45,57 +50,96 @@ public class BonusController : MonoBehaviour
         if (Spin_Button) Spin_Button.onClick.AddListener(Spinbutton);
     }
 
-    internal void StartBonus(int stop)
+    internal void StartBonus(int stop, SlotBehaviour.bonusWheelType wheelType)
     {
+       
         ResetColliders();
         if (PopupPanel) PopupPanel.SetActive(false);
-        if (Win_Transform) Win_Transform.gameObject.SetActive(false);
+        if (Win_Text) Win_Text.gameObject.SetActive(false);
         if (Loose_Transform) Loose_Transform.gameObject.SetActive(false);
         if (_audioManager) _audioManager.SwitchBGSound(true);
-        PopulateWheel(m_SocketManager.bonusdata);
-        stopIndex = stop;
-        if (Bonus_Object) Bonus_Object.SetActive(true);
-        if (Spin_Button) Spin_Button.interactable = true;
 
-        if (slotManager.IsAutoSpin || slotManager.IsFreeSpin)
+       
+        switch (wheelType)
         {
-            Spin_Button.gameObject.SetActive(false);
-            DOVirtual.DelayedCall(1f, () => {
-                Spinbutton();
-            });
+            case SlotBehaviour.bonusWheelType.small:
+              
+                PopulateWheel(m_SocketManager.initialData.smallWheelFeature);
+                break;
+
+            case SlotBehaviour.bonusWheelType.medium:
+                
+                PopulateWheel(m_SocketManager.initialData.mediumWheelFeature);
+                break;
+
+            case SlotBehaviour.bonusWheelType.large:
+               
+                PopulateWheel(m_SocketManager.initialData.largeWheelFeature);       
+                break;
+
+            default:
+                return;
         }
-        else
-        {
-            Spin_Button.gameObject.SetActive(true);
-        }
+        
+        stopIndex = stop;
+        Bonus_Info_Group.gameObject.SetActive(true);
+        Bonus_Info_Wheel.transform.localScale = new Vector2(7.74f, 7.74f);
+        Bonus_Info_Wheel.alpha = 0;
+        Bonus_Info_Wheel.transform.DOScale(new Vector2(1.375f, 1.375f), 0.3f).SetEase(Ease.Flash); 
+        Bonus_Info_Wheel.DOFade(1f, 0.4f).SetEase(Ease.Linear);
+        if (Spin_Button) Spin_Button.interactable = true;
+        Spin_Button.gameObject.SetActive(false);
+        DOVirtual.DelayedCall(2f, () =>
+        {  Spinbutton();         
+        });
+        //if (slotManager.IsAutoSpin || slotManager.IsFreeSpin)
+        //{
+        //    Spin_Button.gameObject.SetActive(false);
+        //    DOVirtual.DelayedCall(1f, () => {
+
+        //        Spinbutton();
+        //    });
+        //}
+        //else
+        //{
+        //    Spin_Button.gameObject.SetActive(true);
+        //}
     }
 
     private void Spinbutton()
     {
         isCollision = false;
         if (Spin_Button) Spin_Button.interactable = false;
-        RotateWheel();
-        DOVirtual.DelayedCall(1.5f, () =>
+        main_Bonus_Object.gameObject.SetActive(true);
+        main_Bonus_Object.alpha = 0f;
+        main_Bonus_Object.DOFade(1f, 0.6f).SetEase(Ease.Flash).OnComplete(delegate
         {
-            TurnCollider(stopIndex);
+
+            RotateWheel();
+            DOVirtual.DelayedCall(1.5f, () =>
+            {
+                Bonus_Info_Group.gameObject.SetActive(false);
+                TurnCollider(stopIndex);
+            });
         });
     }
 
-    internal void PopulateWheel(List<string> bonusdata)
+    internal void PopulateWheel(List<int> bonusdata)
     {
+        Debug.Log("updateRewardsRan");
         for (int i = 0; i < bonusdata.Count; i++)
         {
-            if (bonusdata[i] == "-1") 
+            if (i < 4)
             {
-                if (Bonus_Text[i]) Bonus_Text[i].text = "NO \nBONUS";
+                if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i]+" Spins").ToString();
+               
             }
             else
             {
-                if (Bonus_Text[i]) Bonus_Text[i].text = (double.Parse(bonusdata[i]) * m_SocketManager.initialData.Bets[slotManager.BetCounter]).ToString();
-                Debug.Log("Bonus Data: " + bonusdata[i]);
-                Debug.Log("Bet Data: " + m_SocketManager.initialData.Bets[slotManager.BetCounter]);
-                Debug.Log("Multiplied Form: " + (double.Parse(bonusdata[i]) * m_SocketManager.initialData.Bets[slotManager.BetCounter]).ToString());
+                //if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i] * m_SocketManager.initialData.Bets[slotManager.BetCounter] +"X").ToString();
+                if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i]  + "X").ToString();
             }
+            
         }
     }
 
@@ -139,17 +183,30 @@ public class BonusController : MonoBehaviour
         }
         else
         {
-            if (Win_Transform) Win_Transform.gameObject.SetActive(true);
-            if (Win_Transform) Win_Transform.localScale = Vector3.zero;
+            if (Win_Text) Win_Text.gameObject.SetActive(true);
+            if (Bonus_Text[stopIndex].text.Contains("Spins"))
+            { 
+                if (Win_Text) Win_Text.text = "You Win " + Bonus_Text[stopIndex].text;
+            }
+            else
+            {
+                if (Win_Text) Win_Text.text = "You Win " + Bonus_Text[stopIndex].text + " Multiplier";
+            }
+            
             if (PopupPanel) PopupPanel.SetActive(true);
-            if (Win_Transform) Win_Transform.DOScale(Vector3.one, 1f);
+           // if (Win_Text) Win_Text.transform.DOScale(Vector3.one, 1f);
             PlayWinLooseSound(true);
         }
         DOVirtual.DelayedCall(3f, () =>
         {
+           
             ResetColliders();
             if (_audioManager) _audioManager.SwitchBGSound(false);
-            if (Bonus_Object) Bonus_Object.SetActive(false);
+            main_Bonus_Object.DOFade(0, 0.5f).SetEase(Ease.Linear).OnComplete(delegate
+        {
+            if (main_Bonus_Object) main_Bonus_Object.gameObject.SetActive(false);
+        });
+           
             slotManager.CheckWinPopups();
         });
     }

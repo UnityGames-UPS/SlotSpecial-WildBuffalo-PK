@@ -13,11 +13,12 @@ using Best.SocketIO.Events;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
 using Best.HTTP.Shared;
+using UnityEditor.VersionControl;
 
 public class SocketIOManager : MonoBehaviour
 {
     [SerializeField]
-    private SlotBehaviour slotManager;
+    internal SlotBehaviour slotManager;
 
     [SerializeField]
     private UIManager uiManager;
@@ -43,8 +44,8 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField]
     private string testToken;
 
-    protected string gameID = "SL-VIK";
-     //protected string gameID = "";
+    //protected string gameID = "SL-WB";
+    protected string gameID = "";
 
     internal bool isLoaded = false;
 
@@ -245,6 +246,7 @@ public class SocketIOManager : MonoBehaviour
         {
             if (json != null)
             {
+                Debug.Log(json);
                 this.manager.Socket.Emit(eventName, json);
                 Debug.Log("JSON data sent: " + json);
             }
@@ -270,13 +272,14 @@ public class SocketIOManager : MonoBehaviour
     {
         Debug.Log(jsonObject);
         Root myData = JsonConvert.DeserializeObject<Root>(jsonObject);
-
+        Debug.Log("initData");
         string id = myData.id;
 
         switch(id)
         {
             case "InitData":
                 {
+                   
                     initialData = myData.message.GameData;
                     initUIData = myData.message.UIData;
                     playerdata = myData.message.PlayerData;
@@ -284,9 +287,11 @@ public class SocketIOManager : MonoBehaviour
                     if (!SetInit)
                     {
                         Debug.Log(jsonObject);
-                        List<string> LinesString = ConvertListListIntToListString(initialData.Lines);
+                        Debug.Log(initialData.largeWheelFeature);
+                        List<string> LinesString = ConvertListListIntToListString(initialData.linesApiData);
                         List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
                         InitialReels = RemoveQuotes(InitialReels);
+
                         PopulateSlotSocket(InitialReels, LinesString);
                         SetInit = true;
                     }
@@ -326,9 +331,12 @@ public class SocketIOManager : MonoBehaviour
 
     private void PopulateSlotSocket(List<string> slotPop, List<string> LineIds)
     {
+        Debug.Log("shuffleran");
         slotManager.shuffleInitialMatrix();
+        Debug.Log(LineIds.Count);
         for (int i = 0; i < LineIds.Count; i++)
         {
+            
             slotManager.FetchLines(LineIds[i], i);
         }
 
@@ -464,9 +472,19 @@ public class AbtLogo
 public class GameData
 {
     public List<List<string>> Reel { get; set; }
-    public List<List<int>> Lines { get; set; }
+    public List<List<int>> linesApiData { get; set; }
     public List<double> Bets { get; set; }
+    public List<int> smallWheelFeature { get; set; }
+    public List<int> mediumWheelFeature { get; set; }
+    public List<int> largeWheelFeature { get; set; }
     public bool canSwitchLines { get; set; }
+    public bool isFreeSpin { get; set; }
+    public int freeSpinCount;
+    public bool isSmallWheelTriggered;
+    public bool isMediumWheelTriggered;
+    public bool isLargeWheelTriggered;
+    public int indexToStop;
+    public bool freeSpinAdded;
     public List<int> LinesCount { get; set; }
     public List<int> autoSpin { get; set; }
     public List<List<string>> ResultReel { get; set; }
@@ -530,7 +548,7 @@ public class Symbol
 
     // This property will hold the properly deserialized list of lists of integers
     [JsonIgnore]
-    public List<List<int>> Multiplier { get; private set; }
+    public List<List<double>> Multiplier { get; private set; }
 
     // Custom deserialization method to handle the conversion
     [OnDeserialized]
@@ -539,12 +557,12 @@ public class Symbol
         // Handle the case where multiplier is an object (empty in JSON)
         if (MultiplierObject is JObject)
         {
-            Multiplier = new List<List<int>>();
+            Multiplier = new List<List<double>>();
         }
         else
         {
             // Deserialize normally assuming it's an array of arrays
-            Multiplier = JsonConvert.DeserializeObject<List<List<int>>>(MultiplierObject.ToString());
+            Multiplier = JsonConvert.DeserializeObject<List<List<double>>>(MultiplierObject.ToString());
         }
     }
     public object defaultAmount { get; set; }

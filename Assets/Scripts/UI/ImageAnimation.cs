@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +12,18 @@ public class ImageAnimation : MonoBehaviour
 		PAUSED
 	}
 
-	public static ImageAnimation Instance;
+
+	[SerializeField] private RectTransform thisTransfom;
+
+    public static ImageAnimation Instance;
 
 	public List<Sprite> textureArray;
 
 	public Image rendererDelegate;
 
 	public bool useSharedMaterial = true;
+
+	public bool doTweenAnimation = false;
 
 	public bool doLoopAnimation = true;
 	[SerializeField] private bool StartOnAwake;
@@ -34,6 +40,9 @@ public class ImageAnimation : MonoBehaviour
 	public float AnimationSpeed = 5f;
 
 	public float delayBetweenLoop;
+	private Tweener tweenAnim;
+	
+	public int count;
 
 	private void Awake()
 	{
@@ -41,49 +50,70 @@ public class ImageAnimation : MonoBehaviour
 		{
 			Instance = this;
 		}
-		if(StartOnAwake){
+		if(StartOnAwake)
+		{
 			StartAnimation();
 		}
 	}
 
 	private void OnEnable()
 	{
+        if (StartOnAwake && textureArray.Count > 0 || StartOnAwake && doTweenAnimation)
+        {
+            StartAnimation();
+        }
+      
 
-	}
+    }
 
 	private void OnDisable()
 	{
 		//rendererDelegate.sprite = textureArray[0];
-		StopAnimation();
+		
+        StopAnimation();
 	}
 
 	private void AnimationProcess()
 	{
-		SetTextureOfIndex();
-		indexOfTexture++;
-		if (indexOfTexture == textureArray.Count)
-		{
-			indexOfTexture = 0;
-			if (doLoopAnimation)
+		
+			SetTextureOfIndex();
+			indexOfTexture++;
+
+			if (indexOfTexture == textureArray.Count)
 			{
-				Invoke("AnimationProcess", delayBetweenAnimation + delayBetweenLoop);
+				indexOfTexture = 0;
+				if (doLoopAnimation)
+				{
+					Invoke("AnimationProcess", delayBetweenAnimation + delayBetweenLoop);
+				}
 			}
-		}
-		else
-		{
-			Invoke("AnimationProcess", delayBetweenAnimation);
-		}
+			else
+			{
+				Invoke("AnimationProcess", delayBetweenAnimation);
+			}
+		
+		
+
 	}
 
 	public void StartAnimation()
 	{
-		indexOfTexture = 0;
-		if (currentAnimationState == ImageState.NONE)
+		
+		if (!doTweenAnimation)
 		{
-			RevertToInitialState();
-			delayBetweenAnimation = idealFrameRate * (float)textureArray.Count / AnimationSpeed;
-			currentAnimationState = ImageState.PLAYING;
-			Invoke("AnimationProcess", delayBetweenAnimation);
+			indexOfTexture = 0;
+			if (currentAnimationState == ImageState.NONE)
+			{
+				RevertToInitialState();
+				delayBetweenAnimation = idealFrameRate * (float)textureArray.Count / AnimationSpeed;
+				currentAnimationState = ImageState.PLAYING;
+				Invoke("AnimationProcess", delayBetweenAnimation);
+			}
+		}
+		else
+		{
+            thisTransfom.localScale = new Vector2(1f, 1f);
+            tweenAnim = thisTransfom.DOScale(new Vector2(1.2f, 1.2f), 0.3f).SetLoops(-1, LoopType.Yoyo).SetDelay(0);			
 		}
 	}
 
@@ -91,7 +121,8 @@ public class ImageAnimation : MonoBehaviour
 	{
 		if (currentAnimationState == ImageState.PLAYING)
 		{
-			CancelInvoke("AnimationProcess");
+           
+            CancelInvoke("AnimationProcess");
 			currentAnimationState = ImageState.PAUSED;
 		}
 	}
@@ -107,22 +138,40 @@ public class ImageAnimation : MonoBehaviour
 
 	public void StopAnimation()
 	{
-		if (currentAnimationState != 0)
+		if (!doTweenAnimation)
 		{
-			rendererDelegate.sprite = textureArray[0];
-			CancelInvoke("AnimationProcess");
-			currentAnimationState = ImageState.NONE;
+			if (currentAnimationState != 0)
+			{
+				rendererDelegate.sprite = textureArray[0];
+				CancelInvoke("AnimationProcess");
+				currentAnimationState = ImageState.NONE;
+			}
 		}
+		else
+        {
+			
+            DOTween.Kill(thisTransfom);
+            thisTransfom.localScale = new Vector2(1f, 1f);
+           
+           
+        }
+
 	}
 
 	public void RevertToInitialState()
 	{
 		indexOfTexture = 0;
-		SetTextureOfIndex();
+		if (!doTweenAnimation)
+		{
+			SetTextureOfIndex();
+		}
+
+		
 	}
 
 	private void SetTextureOfIndex()
 	{
+		
 		if (useSharedMaterial)
 		{
 			rendererDelegate.sprite = textureArray[indexOfTexture];

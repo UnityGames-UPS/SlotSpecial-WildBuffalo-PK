@@ -38,7 +38,7 @@ public class ButtonAnimator : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public void OnPointerUp(PointerEventData eventData)
     {
         // Debug.Log("Pointer Up");
-        if(button.interactable)
+        
             OnClickedAnimation(buttonTransform);
     }
 

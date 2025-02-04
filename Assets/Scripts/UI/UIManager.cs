@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
+using Best.SocketIO;
 
 public class UIManager : MonoBehaviour
 {
@@ -72,6 +73,10 @@ public class UIManager : MonoBehaviour
     private TMP_Text Jackpot_Text;
     [SerializeField]
     private TMP_Text Bonus_Text;
+    [SerializeField]
+    private TMP_Text goldenBonus_Text;
+    [SerializeField]
+    private TMP_Text Bonus_Text_Panel;
     [SerializeField]
     private TMP_Text Wild_Text;
 
@@ -317,12 +322,18 @@ public class UIManager : MonoBehaviour
         FreeSpins=spins;
         Debug.Log("ExtraSpins: " +ExtraSpins);
         Debug.Log("Total Spins: " +spins);
-        if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);           
-        if (Free_Text) Free_Text.text = ExtraSpins.ToString() + " Free spins awarded.";
-        if (MainPopup_Object) MainPopup_Object.SetActive(true);
-        DOVirtual.DelayedCall(2f, ()=>{
-            StartFreeSpins(spins);
-        });
+        if (ExtraSpins > 0)
+        {
+            if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
+            if (Free_Text) Free_Text.text = ExtraSpins.ToString() + " Free spins awarded.";
+            if (MainPopup_Object) MainPopup_Object.SetActive(true);
+        }
+       
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                StartFreeSpins(spins);
+            });
+        
     }
 
     void SkipWin(){
@@ -410,7 +421,23 @@ public class UIManager : MonoBehaviour
             {
                 if (Jackpot_Text) Jackpot_Text.text = paylines.symbols[i].description.ToString();
             }
+            if (paylines.symbols[i].Name.ToUpper() == "GOLDENBONUS")
+            {
+               
+                string convertedLine = paylines.symbols[i].description.ToString().Replace("Bonus", "<sprite=0>");
+                Debug.Log(convertedLine);
+                convertedLine = convertedLine.Replace("GoldenBonus", "<sprite=1>");
+                if (goldenBonus_Text) goldenBonus_Text.text = convertedLine;
+            }
             if (paylines.symbols[i].Name.ToUpper() == "BONUS")
+            {
+                
+                string convertedLine = paylines.symbols[i].description.ToString().Replace("Bonus", "<sprite=0>");
+              
+                if (Bonus_Text_Panel) Bonus_Text_Panel.text = convertedLine;
+              
+            }
+            if (paylines.symbols[i].Name.ToUpper() == "10")
             {
                 if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
             }
@@ -418,6 +445,7 @@ public class UIManager : MonoBehaviour
             {
                 if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
             }
+
         }
     }
 
