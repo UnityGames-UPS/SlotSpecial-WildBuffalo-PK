@@ -44,8 +44,8 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField]
     private string testToken;
 
-    //protected string gameID = "SL-WB";
-    protected string gameID = "";
+    protected string gameID = "SL-WB";
+    //protected string gameID = "";
 
     internal bool isLoaded = false;
 
@@ -353,7 +353,7 @@ public class SocketIOManager : MonoBehaviour
         message.data = new BetData();
         message.data.currentBet = currBet;
         message.data.spins = 1;
-        message.data.currentLines = 20;
+        message.data.currentLines = 50;
         message.id = "SPIN";
         // Serialize message data to JSON
         string json = JsonUtility.ToJson(message);

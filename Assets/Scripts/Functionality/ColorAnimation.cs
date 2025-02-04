@@ -8,7 +8,7 @@ public class ColorAnimation : MonoBehaviour
     private Image thisImage;
 
     public Color color1 = Color.red;
-    public Color color2 = Color.blue;
+    public Color color2 = Color.white;
 
     [SerializeField]
     public float duration = 1f; 

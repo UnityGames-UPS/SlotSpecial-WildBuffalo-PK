@@ -424,15 +424,15 @@ public class UIManager : MonoBehaviour
             if (paylines.symbols[i].Name.ToUpper() == "GOLDENBONUS")
             {
                
-                string convertedLine = paylines.symbols[i].description.ToString().Replace("Bonus", "<sprite=0>");
+                string convertedLine = paylines.symbols[i].description.ToString().Replace("BonusSymbol", "<sprite=2>");
                 Debug.Log(convertedLine);
-                convertedLine = convertedLine.Replace("GoldenBonus", "<sprite=1>");
+                convertedLine = convertedLine.Replace("GoldenSymbol", "<sprite=1>");
                 if (goldenBonus_Text) goldenBonus_Text.text = convertedLine;
             }
             if (paylines.symbols[i].Name.ToUpper() == "BONUS")
             {
                 
-                string convertedLine = paylines.symbols[i].description.ToString().Replace("Bonus", "<sprite=0>");
+                string convertedLine = paylines.symbols[i].description.ToString().Replace("BonusSymbol", "<sprite=2>");
               
                 if (Bonus_Text_Panel) Bonus_Text_Panel.text = convertedLine;
               
@@ -443,7 +443,8 @@ public class UIManager : MonoBehaviour
             }
             if (paylines.symbols[i].Name.ToUpper() == "WILD")
             {
-                if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
+                string convertedLine = paylines.symbols[i].description.ToString().Replace("BonusSymbol", "<sprite=2>");
+                if (Wild_Text) Wild_Text.text = convertedLine;
             }
 
         }

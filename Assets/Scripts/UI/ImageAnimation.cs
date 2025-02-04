@@ -59,7 +59,8 @@ public class ImageAnimation : MonoBehaviour
 	private void OnEnable()
 	{
         if (StartOnAwake && textureArray.Count > 0 || StartOnAwake && doTweenAnimation)
-        {
+		{
+			thisTransfom.localScale = new Vector2(1f, 1f);
             StartAnimation();
         }
       
@@ -113,7 +114,7 @@ public class ImageAnimation : MonoBehaviour
 		else
 		{
             thisTransfom.localScale = new Vector2(1f, 1f);
-            tweenAnim = thisTransfom.DOScale(new Vector2(1.2f, 1.2f), 0.3f).SetLoops(-1, LoopType.Yoyo).SetDelay(0);			
+            tweenAnim = thisTransfom.DOScale(new Vector2(1.2f, 1.2f),0.2f).SetLoops(-1, LoopType.Yoyo).SetDelay(0);			
 		}
 	}
 

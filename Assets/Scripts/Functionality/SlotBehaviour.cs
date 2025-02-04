@@ -600,6 +600,7 @@ public class SlotBehaviour : MonoBehaviour
             ToggleButtonGrp(true);
             yield break;
         }
+        Balance_text.text = "0.000";
         if (audioController) audioController.PlayWLAudio("spin");
         CheckSpinAudio = true;
 
@@ -950,7 +951,14 @@ public class SlotBehaviour : MonoBehaviour
             if (audioController) audioController.StopWLAaudio();
         }
         CheckSpinAudio = false;
-
+        if (SocketManager.resultData.freeSpinCount > 0)
+        {
+            AutoSpinStop_Button.interactable = false;
+        }
+        else
+        {
+            AutoSpinStop_Button.interactable = true;
+        }
         if (LineId.Count > 0)
         {
             if (IsAutoSpin)
@@ -960,14 +968,7 @@ public class SlotBehaviour : MonoBehaviour
                 StopCoroutine(AutoSpinCoroutine());
                 Debug.Log("callBoxRoutine");
             }
-            if (SocketManager.resultData.freeSpinCount > 0)
-            {
-                AutoSpinStop_Button.interactable = false;
-            }
-            else
-            {
-                AutoSpinStop_Button.interactable = true;
-            }
+           
 
             BoxAnimRoutine = StartCoroutine(BoxRoutine(LineId, SocketManager.resultData.symbolsToEmit));
         }
