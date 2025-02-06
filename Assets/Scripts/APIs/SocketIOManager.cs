@@ -13,7 +13,6 @@ using Best.SocketIO.Events;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
 using Best.HTTP.Shared;
-using UnityEditor.VersionControl;
 
 public class SocketIOManager : MonoBehaviour
 {
