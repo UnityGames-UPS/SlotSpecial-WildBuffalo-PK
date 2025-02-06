@@ -526,7 +526,7 @@ public class SlotBehaviour : MonoBehaviour
     private void StartSlots(bool autoSpin = false)
     {
         if (audioController) audioController.PlaySpinButtonAudio();
-
+        TotalWin_text.text = "0.000";
         if (!autoSpin)
         {
             if (AutoSpinRoutine != null)
@@ -558,7 +558,7 @@ public class SlotBehaviour : MonoBehaviour
                 boost_obj.gameObject.SetActive(true);
                 alltweens[tweenNum].timeScale = 14f;
                 boost_obj.position = boost_Positions[tweenNum].position;
-
+                audioController.PlayBoostSpinAudio();
                 yield return new WaitForSeconds(boostDuration);
 
                 alltweens[tweenNum].timeScale = 1f;
@@ -586,8 +586,8 @@ public class SlotBehaviour : MonoBehaviour
             ToggleButtonGrp(true);
             yield break;
         }
-        Balance_text.text = "0.000";
-        if (audioController) audioController.PlayWLAudio("spin");
+        
+       
         CheckSpinAudio = true;
 
         IsSpinning = true;
@@ -804,16 +804,17 @@ public class SlotBehaviour : MonoBehaviour
         try
         {
             balance = double.Parse(Balance_text.text);
+            Debug.Log(balance);
         }
         catch (Exception e)
         {
             Debug.Log("Error while conversion " + e.Message);
         }
         double initAmount = balance;
-
+    
         balance = balance - bet;
-
-        BalanceTween=DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
+        Debug.Log(initAmount + " " + balance);
+        BalanceTween =DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
         {
             if (Balance_text) Balance_text.text = initAmount.ToString("F3");
         });
@@ -1187,7 +1188,22 @@ public class SlotBehaviour : MonoBehaviour
         alltweens[index].Kill();
         int tweenpos = (reqpos * IconSizeFactor) - IconSizeFactor;
         slotTransform.localPosition = new Vector2(slotTransform.localPosition.x, 0);
-        alltweens[index] = slotTransform.DOLocalMoveY(-tweenpos + 100, 0.5f).SetEase(Ease.OutElastic);
+        alltweens[index] = slotTransform.DOLocalMoveY(-tweenpos + 100, 0.5f).SetEase(Ease.OutElastic).OnComplete(delegate
+        {
+            if (!isStop)
+            {
+                Debug.Log("playing stop sound");
+                audioController.PlayWLAudio("spinStop");
+            }
+            else
+            {
+                if (index == alltweens.Count - 1)
+                {
+                    audioController.PlayWLAudio("spinStop");
+                }
+            }
+            
+        });
         if (!isStop)
         {
             yield return new WaitForSeconds(0.2f);
@@ -1197,7 +1213,6 @@ public class SlotBehaviour : MonoBehaviour
             yield return null;
         }
     }
-
 
     private void KillAllTweens()
     {
