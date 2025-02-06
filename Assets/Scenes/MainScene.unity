@@ -1490,8 +1490,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &65013026
 GameObject:
@@ -5189,8 +5187,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &279045532
 GameObject:
@@ -6556,8 +6552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &385709537
 GameObject:
@@ -8973,8 +8967,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &534051459
 GameObject:
@@ -9371,8 +9363,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &562158822
 GameObject:
@@ -12898,8 +12888,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &739030695
 GameObject:
@@ -15483,8 +15471,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &836189145
 GameObject:
@@ -15934,8 +15920,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &855633060
 GameObject:
@@ -16633,8 +16617,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &887033464
 GameObject:
@@ -16725,8 +16707,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &887660852
 GameObject:
@@ -20189,8 +20169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1130766584
 GameObject:
@@ -20360,8 +20338,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1144460043
 GameObject:
@@ -21781,8 +21757,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1213223873
 GameObject:
@@ -26517,8 +26491,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1448314176
 GameObject:
@@ -26746,8 +26718,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1460404958
 GameObject:
@@ -30107,8 +30077,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1666685182
 GameObject:
@@ -31761,8 +31729,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1741528664
 GameObject:
@@ -34067,8 +34033,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1875495304
 GameObject:
@@ -34808,8 +34772,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1916007976
 GameObject:
@@ -36294,8 +36256,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisImage: {fileID: 0}
-  color1: {r: 1, g: 0, b: 0, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
   duration: 0.4
 --- !u!1 &1980391896
 GameObject:
@@ -38276,7 +38236,6 @@ MonoBehaviour:
   - {fileID: 2001807393, guid: 3aed810bd6d0348b59daeddb9a9b42af, type: 3}
   - {fileID: 2001807393, guid: 3aed810bd6d0348b59daeddb9a9b42af, type: 3}
   PayCalculator: {fileID: 963807277}
-  bonus_AnimString: []
   TempList: []
   SocketManager: {fileID: 500036492}
   IconSizeFactor: 156
@@ -40304,7 +40263,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -40440,7 +40399,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -40544,7 +40503,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6e3010398d0a64fc7953f98a0538a174, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -40681,7 +40640,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -40777,7 +40736,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0

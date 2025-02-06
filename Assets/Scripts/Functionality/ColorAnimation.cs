@@ -7,11 +7,11 @@ public class ColorAnimation : MonoBehaviour
     [SerializeField]
     private Image thisImage;
 
-    public Color color1 = Color.red;
-    public Color color2 = Color.white;
+    private Color color1 = Color.red;
+    private Color color2 = Color.white;
 
     [SerializeField]
-    public float duration = 1f; 
+    private float duration = 1f; 
     private LoopType loopType = LoopType.Yoyo;
     Tween thisTween;
 
