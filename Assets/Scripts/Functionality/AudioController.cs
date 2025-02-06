@@ -12,13 +12,15 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioClip[] clips;
     [SerializeField] private AudioClip[] Bonusclips;
     [SerializeField] private AudioSource bg_audioBonus;
+    [SerializeField] private AudioSource audioPlayer_Boost;
     [SerializeField] private AudioSource audioPlayer_Bonus;
 
     private void Start()
     {
         if (bg_adudio) bg_adudio.Play();
-        audioPlayer_button.clip = clips[clips.Length-1];
-        audioSpin_button.clip = clips[clips.Length-2];
+        audioPlayer_button.clip = clips[clips.Length-2];
+        audioSpin_button.clip = clips[clips.Length-3];
+        audioPlayer_Boost.clip = clips[clips.Length-1];
     }
 
     internal void CheckFocusFunction(bool focus, bool IsSpinning)
@@ -113,6 +115,11 @@ public class AudioController : MonoBehaviour
     internal void PlayButtonAudio()
     {
         audioPlayer_button.Play();
+    }
+
+    internal void PlayBoostSpinAudio()
+    {
+        audioPlayer_Boost.Play();
     }
 
     internal void PlaySpinButtonAudio()
