@@ -28,7 +28,7 @@ public class ColorAnimation : MonoBehaviour
 
     private void OnDisable()
     {
-        thisTween.Kill();
+        DOTween.Kill(this);
     }
 
     private void LoopBetweenColors()

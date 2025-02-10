@@ -146,7 +146,7 @@ public class BonusController : MonoBehaviour
     private void RotateWheel()
     {
         if (Wheel_Transform) Wheel_Transform.localEulerAngles = new Vector3(0, 0, 359);
-        if (Wheel_Transform) wheelRoutine =  Wheel_Transform.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
+        if (Wheel_Transform) wheelRoutine =  Wheel_Transform.DORotate(new Vector3(0, 0, 0), 0.6f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
         _audioManager.PlayBonusAudio("cycleSpin");
     }
 
