@@ -157,6 +157,7 @@ public class SlotBehaviour : MonoBehaviour
     internal bool WasAutoSpinOn;
     private float boostDuration = 2f;
     private bool boostDone;
+    internal bool spinDone;
     private Coroutine BoxAnimRoutine = null;
     internal enum bonusWheelType
     {
@@ -551,7 +552,7 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (tweenNum > 0)
         {
-            int boostchance = UnityEngine.Random.Range(0, 15);
+            int boostchance = UnityEngine.Random.Range(0, 30);
             if (boostchance < 3)
             {
                 boostDone = false;
@@ -666,6 +667,7 @@ public class SlotBehaviour : MonoBehaviour
         List<int> points_anim = null;
         bool isBonusGame = false;
         CheckPopups = false;
+        wheelType = bonusWheelType.none;
         if (SocketManager.resultData.isSmallWheelTriggered)
         {
             wheelType = bonusWheelType.small;
@@ -687,6 +689,7 @@ public class SlotBehaviour : MonoBehaviour
             CheckPopups = true;
         }
         CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, bonus_AnimString, SocketManager.resultData.jackpot);
+        Debug.Log(IsAutoSpin + "  " + SocketManager.resultData.isFreeSpin + "  " + isBonusGame);
         if (!IsAutoSpin && !SocketManager.resultData.isFreeSpin && !isBonusGame)
         {
             ToggleButtonGrp(true);
@@ -739,7 +742,7 @@ public class SlotBehaviour : MonoBehaviour
                             {
                                 points_anim = bonus_AnimString[i]?.Split(',')?.Select(Int32.Parse)?.ToList();
                                 int k = 0;
-                                Debug.Log(points_anim[k]);
+                                
                                 while (k < points_anim.Count)
                                 {
                                     Tempimages[points_anim[k]].slotImages[points_anim[k + 1]].gameObject.SetActive(false);
@@ -756,27 +759,29 @@ public class SlotBehaviour : MonoBehaviour
 
 
         CheckPopups = true;
-
+        spinDone = true;
         if (isBonusGame)
         {
+            spinDone = false;
             CheckBonusGame();
         }
        
         BalanceTween?.Kill();
       
         currentBalance = SocketManager.playerdata.Balance;
-        wheelType = bonusWheelType.none;
+      
        
        
            
         if (!isBonusGame && SocketManager.resultData.linesToEmit.Count == 0)
         {
+            Debug.Log("checkWinPopUpsCalledFromHereISbonusFalse");
             CheckWinPopups();
         }
 
        
-
-        yield return new WaitUntil(() => !CheckPopups);
+        yield return new WaitUntil(() => spinDone);
+        
         
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
         
@@ -792,13 +797,10 @@ public class SlotBehaviour : MonoBehaviour
         }
 
         if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
-        if (isBonusGame)
-        {
-            yield return new WaitForSeconds(1f);
-        }
-        
+      
         if (SocketManager.resultData.isFreeSpin)
         {
+            Debug.Log("calledEarly");
             if (IsFreeSpin)
             {
                 IsFreeSpin = false;
@@ -846,7 +848,7 @@ public class SlotBehaviour : MonoBehaviour
         double initAmount = balance;
     
         balance = balance - bet;
-        Debug.Log(initAmount + " " + balance);
+       
         BalanceTween =DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
         {
             if (Balance_text) Balance_text.text = initAmount.ToString("F3");
@@ -869,7 +871,7 @@ public class SlotBehaviour : MonoBehaviour
         }
         else
         {
-            Debug.Log("checkwinpopupsRan");
+          
             CheckPopups = false;
         }
     }
@@ -882,6 +884,7 @@ public class SlotBehaviour : MonoBehaviour
         }
         else
         {
+            Debug.Log("checkWinPopUpsCalledFromHereCheckBonus");
             CheckWinPopups();
         }
        
@@ -1070,7 +1073,7 @@ public class SlotBehaviour : MonoBehaviour
             }
             if (LineIDs.Count > 0)
             {
-                Debug.Log("linIdFuncRan");
+              
                 for (int i = 0; i < points_AnimString.Count; i++)
                 {
                    
