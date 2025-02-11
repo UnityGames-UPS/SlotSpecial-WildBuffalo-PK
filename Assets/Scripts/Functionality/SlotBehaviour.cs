@@ -158,7 +158,9 @@ public class SlotBehaviour : MonoBehaviour
     private float boostDuration = 2f;
     private bool boostDone;
     internal bool spinDone;
+    private bool hasSkippedAnimation;
     private Coroutine BoxAnimRoutine = null;
+    public float delayTime = 0;
     internal enum bonusWheelType
     {
         none,
@@ -574,11 +576,16 @@ public class SlotBehaviour : MonoBehaviour
         }
     }
 
-
+    internal void skipAnim()
+    {
+        uiManager.AnimSkip_Button.gameObject.SetActive(false);
+        delayTime = 0;
+    }
    
     private IEnumerator TweenRoutine()
     {
-       
+
+        uiManager.AnimSkip_Button.gameObject.SetActive(false);
         if (currentBalance < currentTotalBet && !IsFreeSpin) 
         {
             CompareBalance();
@@ -633,6 +640,7 @@ public class SlotBehaviour : MonoBehaviour
         boostDone = true;
         if (IsTurboOn || IsFreeSpin){
 
+           
             StopSpinToggle = true;
             yield return new WaitForSeconds(0.1f);
         }
@@ -708,8 +716,8 @@ public class SlotBehaviour : MonoBehaviour
             TotalWin_text.text = "";
         }
         yield return new WaitUntil(() => !CheckPopups);
-        
-        
+
+        delayTime = 1;
 
         
         if (bonus_AnimString.Count>2)
@@ -967,10 +975,12 @@ public class SlotBehaviour : MonoBehaviour
         {
             if (SocketManager.resultData.freeSpinCount > 0)
             {
+                uiManager.AnimSkip_Button.gameObject.SetActive(true);
                 CheckPopups = true;
             }
             if (IsAutoSpin)
             {
+                uiManager.AnimSkip_Button.gameObject.SetActive(true);
                 CheckPopups = true;
                 WasAutoSpinOn = true;
                 IsAutoSpin = false;
@@ -998,7 +1008,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private IEnumerator BoxRoutine(List<int> LineIDs, List<List<string>> points_AnimString)
     {
-        float delayTime = 0;
+       
         if (WasAutoSpinOn || SocketManager.resultData.isFreeSpin)
         {
             delayTime = 1;
@@ -1094,8 +1104,9 @@ public class SlotBehaviour : MonoBehaviour
                             k += 2;
                         }
                     }
-                  
-                    yield return new WaitForSeconds(2f);
+
+
+                    yield return new WaitForSeconds(delayTime);
                    
                     for (int j = 0; j < points_AnimString[i].Count; j++)
                     {
