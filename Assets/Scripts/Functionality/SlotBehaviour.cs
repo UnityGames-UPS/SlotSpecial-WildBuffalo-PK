@@ -147,7 +147,7 @@ public class SlotBehaviour : MonoBehaviour
     internal int BetCounter = 0;
     private double currentBalance = 0;
     private double currentTotalBet = 0;
-    protected int Lines = 20;
+    protected int Lines = 50;
     [SerializeField]
     private int IconSizeFactor = 100;       
     private int numberOfSlots = 5;          
@@ -157,7 +157,10 @@ public class SlotBehaviour : MonoBehaviour
     internal bool WasAutoSpinOn;
     private float boostDuration = 2f;
     private bool boostDone;
+    internal bool spinDone;
+    private bool hasSkippedAnimation;
     private Coroutine BoxAnimRoutine = null;
+    public float delayTime = 0;
     internal enum bonusWheelType
     {
         none,
@@ -526,7 +529,7 @@ public class SlotBehaviour : MonoBehaviour
     private void StartSlots(bool autoSpin = false)
     {
         if (audioController) audioController.PlaySpinButtonAudio();
-
+        TotalWin_text.text = "0.000";
         if (!autoSpin)
         {
             if (AutoSpinRoutine != null)
@@ -551,14 +554,14 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (tweenNum > 0)
         {
-            int boostchance = UnityEngine.Random.Range(0, 15);
+            int boostchance = UnityEngine.Random.Range(0, 30);
             if (boostchance < 3)
             {
                 boostDone = false;
                 boost_obj.gameObject.SetActive(true);
                 alltweens[tweenNum].timeScale = 14f;
                 boost_obj.position = boost_Positions[tweenNum].position;
-
+                audioController.PlayBoostSpinAudio();
                 yield return new WaitForSeconds(boostDuration);
 
                 alltweens[tweenNum].timeScale = 1f;
@@ -573,11 +576,16 @@ public class SlotBehaviour : MonoBehaviour
         }
     }
 
-
+    internal void skipAnim()
+    {
+        uiManager.AnimSkip_Button.gameObject.SetActive(false);
+        delayTime = 0;
+    }
    
     private IEnumerator TweenRoutine()
     {
-       
+
+        uiManager.AnimSkip_Button.gameObject.SetActive(false);
         if (currentBalance < currentTotalBet && !IsFreeSpin) 
         {
             CompareBalance();
@@ -586,8 +594,8 @@ public class SlotBehaviour : MonoBehaviour
             ToggleButtonGrp(true);
             yield break;
         }
-        Balance_text.text = "0.000";
-        if (audioController) audioController.PlayWLAudio("spin");
+        
+       
         CheckSpinAudio = true;
 
         IsSpinning = true;
@@ -632,6 +640,7 @@ public class SlotBehaviour : MonoBehaviour
         boostDone = true;
         if (IsTurboOn || IsFreeSpin){
 
+           
             StopSpinToggle = true;
             yield return new WaitForSeconds(0.1f);
         }
@@ -664,9 +673,53 @@ public class SlotBehaviour : MonoBehaviour
             SpinDelay=0.2f;
         }
         List<int> points_anim = null;
-        
-        CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, bonus_AnimString, SocketManager.resultData.jackpot);
+        bool isBonusGame = false;
+        CheckPopups = false;
+        wheelType = bonusWheelType.none;
+        if (SocketManager.resultData.isSmallWheelTriggered)
+        {
+            wheelType = bonusWheelType.small;
+            isBonusGame = true;
+            CheckPopups = true;
 
+        }
+        if (SocketManager.resultData.isMediumWheelTriggered)
+        {
+            wheelType = bonusWheelType.medium;
+            isBonusGame = true;
+            CheckPopups = true;
+
+        }
+        if (SocketManager.resultData.isLargeWheelTriggered)
+        {
+            wheelType = bonusWheelType.large;
+            isBonusGame = true;
+            CheckPopups = true;
+        }
+        CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, bonus_AnimString, SocketManager.resultData.jackpot);
+        Debug.Log(IsAutoSpin + "  " + SocketManager.resultData.isFreeSpin + "  " + isBonusGame);
+        if (!IsAutoSpin && !SocketManager.resultData.isFreeSpin && !isBonusGame)
+        {
+            ToggleButtonGrp(true);
+            IsSpinning = false;
+        }
+        else
+        {
+            IsSpinning = false;
+        }
+        if (!isBonusGame)
+        {
+            if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
+        }
+        else
+        {
+            TotalWin_text.text = "";
+        }
+        yield return new WaitUntil(() => !CheckPopups);
+
+        delayTime = 1;
+
+        
         if (bonus_AnimString.Count>2)
         {
             if (SocketManager.resultData.linesToEmit.Count == 0)
@@ -689,64 +742,61 @@ public class SlotBehaviour : MonoBehaviour
                 }
 
                 yield return new WaitForSeconds(1);
-                if (IsAutoSpin || IsFreeSpin)
-                {
-                    for (int i = 0; i < bonus_AnimString.Count; i++)
+                
+                    if (IsAutoSpin || IsFreeSpin)
                     {
-                        for (int j = 0; j < 5; j++)
+                        for (int i = 0; i < bonus_AnimString.Count; i++)
                         {
-                            points_anim = bonus_AnimString[i]?.Split(',')?.Select(Int32.Parse)?.ToList();
-                            int k = 0;
-                            Debug.Log(points_anim[k]);
-                            while (k < points_anim.Count)
+                            for (int j = 0; j < 5; j++)
                             {
-                                Tempimages[points_anim[k]].slotImages[points_anim[k + 1]].gameObject.SetActive(false);
-                                k += 2;
+                                points_anim = bonus_AnimString[i]?.Split(',')?.Select(Int32.Parse)?.ToList();
+                                int k = 0;
+                                
+                                while (k < points_anim.Count)
+                                {
+                                    Tempimages[points_anim[k]].slotImages[points_anim[k + 1]].gameObject.SetActive(false);
+                                    k += 2;
+                                }
                             }
                         }
+                        if (Win_Object) Win_Object.SetActive(false);
                     }
-                    if (Win_Object) Win_Object.SetActive(false);
-                }
+                
             }
         }
 
 
 
         CheckPopups = true;
-
-        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
+        spinDone = true;
+        if (isBonusGame)
+        {
+            spinDone = false;
+            CheckBonusGame();
+        }
+       
         BalanceTween?.Kill();
-        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
+      
         currentBalance = SocketManager.playerdata.Balance;
-        wheelType = bonusWheelType.none;
-        bool isBonusGame = false;
-        if (SocketManager.resultData.isSmallWheelTriggered)
-        {
-            wheelType = bonusWheelType.small;
-            isBonusGame = true;
-            CheckBonusGame();
-
-        }
-        if (SocketManager.resultData.isMediumWheelTriggered)
-        {
-            wheelType = bonusWheelType.medium;
-            isBonusGame = true;
-            CheckBonusGame();
-        }
-        if (SocketManager.resultData.isLargeWheelTriggered)
-        {
-            wheelType = bonusWheelType.large;
-            isBonusGame = true;
-            CheckBonusGame();
-        }
+      
+       
+       
            
         if (!isBonusGame && SocketManager.resultData.linesToEmit.Count == 0)
         {
+            Debug.Log("checkWinPopUpsCalledFromHereISbonusFalse");
             CheckWinPopups();
         }
 
-        if (!IsAutoSpin && !IsFreeSpin)
+       
+        yield return new WaitUntil(() => spinDone);
+        
+        
+        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
+        
+        if (!IsAutoSpin && !SocketManager.resultData.isFreeSpin)
         {
+
             ToggleButtonGrp(true);
             IsSpinning = false;
         }
@@ -755,17 +805,11 @@ public class SlotBehaviour : MonoBehaviour
             IsSpinning = false;
         }
 
-        yield return new WaitUntil(() => !CheckPopups);
-
-
-
-        if (isBonusGame)
-        {
-            yield return new WaitForSeconds(1f);
-        }
-        
+        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
+      
         if (SocketManager.resultData.isFreeSpin)
         {
+            Debug.Log("calledEarly");
             if (IsFreeSpin)
             {
                 IsFreeSpin = false;
@@ -804,16 +848,17 @@ public class SlotBehaviour : MonoBehaviour
         try
         {
             balance = double.Parse(Balance_text.text);
+            Debug.Log(balance);
         }
         catch (Exception e)
         {
             Debug.Log("Error while conversion " + e.Message);
         }
         double initAmount = balance;
-
+    
         balance = balance - bet;
-
-        BalanceTween=DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
+       
+        BalanceTween =DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
         {
             if (Balance_text) Balance_text.text = initAmount.ToString("F3");
         });
@@ -835,7 +880,7 @@ public class SlotBehaviour : MonoBehaviour
         }
         else
         {
-            Debug.Log("checkwinpopupsRan");
+          
             CheckPopups = false;
         }
     }
@@ -848,6 +893,7 @@ public class SlotBehaviour : MonoBehaviour
         }
         else
         {
+            Debug.Log("checkWinPopUpsCalledFromHereCheckBonus");
             CheckWinPopups();
         }
        
@@ -924,10 +970,18 @@ public class SlotBehaviour : MonoBehaviour
         {
             AutoSpinStop_Button.interactable = true;
         }
+       
         if (LineId.Count > 0)
         {
+            if (SocketManager.resultData.freeSpinCount > 0)
+            {
+                uiManager.AnimSkip_Button.gameObject.SetActive(true);
+                CheckPopups = true;
+            }
             if (IsAutoSpin)
             {
+                uiManager.AnimSkip_Button.gameObject.SetActive(true);
+                CheckPopups = true;
                 WasAutoSpinOn = true;
                 IsAutoSpin = false;
                 StopCoroutine(AutoSpinCoroutine());
@@ -936,6 +990,10 @@ public class SlotBehaviour : MonoBehaviour
            
 
             BoxAnimRoutine = StartCoroutine(BoxRoutine(LineId, SocketManager.resultData.symbolsToEmit));
+        }
+        else
+        {
+            CheckPopups = false;
         }
     }
 
@@ -950,8 +1008,8 @@ public class SlotBehaviour : MonoBehaviour
 
     private IEnumerator BoxRoutine(List<int> LineIDs, List<List<string>> points_AnimString)
     {
-        float delayTime = 0;
-        if (WasAutoSpinOn)
+       
+        if (WasAutoSpinOn || SocketManager.resultData.isFreeSpin)
         {
             delayTime = 1;
         }
@@ -959,7 +1017,9 @@ public class SlotBehaviour : MonoBehaviour
         {
             delayTime = 2;
         }
+
         
+
         PayCalculator.DontDestroyLines.Clear();
         PayCalculator.DontDestroyLines.TrimExcess();
         PayCalculator.ResetLines();
@@ -996,10 +1056,12 @@ public class SlotBehaviour : MonoBehaviour
                     {
                         points_anim = bonus_AnimString[i]?.Split(',')?.Select(Int32.Parse)?.ToList();
                         int k = 0;
-                        Debug.Log(points_anim[k]);
+                       
                         while (k < points_anim.Count)
                         {
+                           
                             Tempimages[points_anim[k]].slotImages[points_anim[k + 1]].gameObject.SetActive(true);
+                            
                             k += 2;
                         }
                     }
@@ -1013,7 +1075,7 @@ public class SlotBehaviour : MonoBehaviour
                     {
                         points_anim = bonus_AnimString[i]?.Split(',')?.Select(Int32.Parse)?.ToList();
                         int k = 0;
-                        Debug.Log(points_anim[k]);
+                      
                         while (k < points_anim.Count)
                         {
                             Tempimages[points_anim[k]].slotImages[points_anim[k + 1]].gameObject.SetActive(false);
@@ -1025,7 +1087,7 @@ public class SlotBehaviour : MonoBehaviour
             }
             if (LineIDs.Count > 0)
             {
-                
+              
                 for (int i = 0; i < points_AnimString.Count; i++)
                 {
                    
@@ -1033,14 +1095,18 @@ public class SlotBehaviour : MonoBehaviour
                     {
                         points_anim = points_AnimString[i][j]?.Split(',')?.Select(Int32.Parse)?.ToList();
                         int k = 0;
+                       
                         while (k < points_anim.Count)
                         {
+                            
                             Tempimages[points_anim[k]].slotImages[points_anim[k + 1]].gameObject.SetActive(true);
+
                             k += 2;
                         }
                     }
-                  
-                    yield return new WaitForSeconds(2f);
+
+
+                    yield return new WaitForSeconds(delayTime);
                    
                     for (int j = 0; j < points_AnimString[i].Count; j++)
                     {
@@ -1067,6 +1133,7 @@ public class SlotBehaviour : MonoBehaviour
                     int k = 0;
                     while (k < points_anim.Count)
                     {
+                       
                         Tempimages[points_anim[k]].slotImages[points_anim[k + 1]].gameObject.SetActive(true);
                         k += 2;
                     }
@@ -1086,7 +1153,7 @@ public class SlotBehaviour : MonoBehaviour
                     }
                 }
             }
-          
+            
             PayCalculator.DontDestroyLines.Clear();
             PayCalculator.DontDestroyLines.TrimExcess();
             PayCalculator.ResetLines();
@@ -1187,7 +1254,22 @@ public class SlotBehaviour : MonoBehaviour
         alltweens[index].Kill();
         int tweenpos = (reqpos * IconSizeFactor) - IconSizeFactor;
         slotTransform.localPosition = new Vector2(slotTransform.localPosition.x, 0);
-        alltweens[index] = slotTransform.DOLocalMoveY(-tweenpos + 100, 0.5f).SetEase(Ease.OutElastic);
+        alltweens[index] = slotTransform.DOLocalMoveY(-tweenpos + 100, 0.5f).SetEase(Ease.OutElastic).OnComplete(delegate
+        {
+            if (!isStop)
+            {
+                Debug.Log("playing stop sound");
+                audioController.PlayWLAudio("spinStop");
+            }
+            else
+            {
+                if (index == alltweens.Count - 1)
+                {
+                    audioController.PlayWLAudio("spinStop");
+                }
+            }
+            
+        });
         if (!isStop)
         {
             yield return new WaitForSeconds(0.2f);
@@ -1197,7 +1279,6 @@ public class SlotBehaviour : MonoBehaviour
             yield return null;
         }
     }
-
 
     private void KillAllTweens()
     {

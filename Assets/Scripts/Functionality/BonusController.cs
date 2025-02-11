@@ -126,7 +126,7 @@ public class BonusController : MonoBehaviour
 
     internal void PopulateWheel(List<int> bonusdata)
     {
-        Debug.Log("updateRewardsRan");
+        
         for (int i = 0; i < bonusdata.Count; i++)
         {
             if (i < 4)
@@ -146,7 +146,7 @@ public class BonusController : MonoBehaviour
     private void RotateWheel()
     {
         if (Wheel_Transform) Wheel_Transform.localEulerAngles = new Vector3(0, 0, 359);
-        if (Wheel_Transform) wheelRoutine =  Wheel_Transform.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
+        if (Wheel_Transform) wheelRoutine =  Wheel_Transform.DORotate(new Vector3(0, 0, 0), 0.6f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
         _audioManager.PlayBonusAudio("cycleSpin");
     }
 
@@ -205,9 +205,12 @@ public class BonusController : MonoBehaviour
             main_Bonus_Object.DOFade(0, 0.5f).SetEase(Ease.Linear).OnComplete(delegate
         {
             if (main_Bonus_Object) main_Bonus_Object.gameObject.SetActive(false);
+            Debug.Log("checkWinPopUpsCalledFromHereAfterSpin");
+            slotManager.CheckWinPopups();
+            slotManager.spinDone = true;
         });
            
-            slotManager.CheckWinPopups();
+           
         });
     }
 

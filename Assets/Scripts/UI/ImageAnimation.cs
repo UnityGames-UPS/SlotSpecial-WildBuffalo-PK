@@ -114,7 +114,10 @@ public class ImageAnimation : MonoBehaviour
 		else
 		{
             thisTransfom.localScale = new Vector2(1f, 1f);
-            tweenAnim = thisTransfom.DOScale(new Vector2(1.2f, 1.2f),0.2f).SetLoops(-1, LoopType.Yoyo).SetDelay(0);			
+			if (tweenAnim == null)
+			{
+				tweenAnim = thisTransfom.DOScale(new Vector2(1.2f, 1.2f), 0.2f).SetLoops(-1, LoopType.Yoyo).SetDelay(0);
+			}
 		}
 	}
 
@@ -150,7 +153,7 @@ public class ImageAnimation : MonoBehaviour
 		}
 		else
         {
-			
+			tweenAnim = null;
             DOTween.Kill(thisTransfom);
             thisTransfom.localScale = new Vector2(1f, 1f);
            
