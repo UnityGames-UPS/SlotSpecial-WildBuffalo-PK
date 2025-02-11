@@ -320,8 +320,7 @@ public class UIManager : MonoBehaviour
     {
         int ExtraSpins=spins-FreeSpins;
         FreeSpins=spins;
-        Debug.Log("ExtraSpins: " +ExtraSpins);
-        Debug.Log("Total Spins: " +spins);
+       
         if (ExtraSpins > 0)
         {
             if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
