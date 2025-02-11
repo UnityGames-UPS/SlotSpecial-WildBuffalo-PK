@@ -175,6 +175,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Button GameExit_Button;
+    [SerializeField]
+    internal Button AnimSkip_Button;
 
     [SerializeField]
     private SlotBehaviour slotManager;
@@ -205,6 +207,9 @@ public class UIManager : MonoBehaviour
 
         if (Paytable_Button) Paytable_Button.onClick.RemoveAllListeners();
         if (Paytable_Button) Paytable_Button.onClick.AddListener(delegate { OpenPopup(PaytablePopup_Object); });
+
+        if (AnimSkip_Button) AnimSkip_Button.onClick.RemoveAllListeners();
+        if (AnimSkip_Button) AnimSkip_Button.onClick.AddListener(SkipAnimation);
 
         if (PaytableExit_Button) PaytableExit_Button.onClick.RemoveAllListeners();
         if (PaytableExit_Button) PaytableExit_Button.onClick.AddListener(delegate { ClosePopup(PaytablePopup_Object); });
@@ -278,6 +283,11 @@ public class UIManager : MonoBehaviour
     internal void LowBalPopup()
     {
         OpenPopup(LBPopup_Object);
+    }
+
+    internal void SkipAnimation()
+    {
+        slotManager.skipAnim();
     }
 
     internal void DisconnectionPopup(bool isReconnection)
