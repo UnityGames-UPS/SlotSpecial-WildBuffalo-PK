@@ -699,7 +699,6 @@ public class SlotBehaviour : MonoBehaviour
         {
             IsSpinning = false;
         }
-        yield return new WaitUntil(() => !CheckPopups);
         if (!isBonusGame)
         {
             if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
@@ -708,6 +707,8 @@ public class SlotBehaviour : MonoBehaviour
         {
             TotalWin_text.text = "";
         }
+        yield return new WaitUntil(() => !CheckPopups);
+        
         
 
         
@@ -964,7 +965,10 @@ public class SlotBehaviour : MonoBehaviour
        
         if (LineId.Count > 0)
         {
-           
+            if (SocketManager.resultData.freeSpinCount > 0)
+            {
+                CheckPopups = true;
+            }
             if (IsAutoSpin)
             {
                 CheckPopups = true;
