@@ -495,7 +495,7 @@ public class GameData
     public List<string> FinalResultReel { get; set; }
     public double jackpot { get; set; }
     public bool isBonus { get; set; }
-    public double BonusStopIndex { get; set; }
+    public int BonusStopIndex { get; set; }
 }
 
 [Serializable]
