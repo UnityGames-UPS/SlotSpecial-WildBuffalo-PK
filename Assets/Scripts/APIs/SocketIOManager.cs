@@ -219,7 +219,7 @@ public class SocketIOManager : MonoBehaviour
     }
     private void OnSocketAlert(string data)
     {
-        Debug.Log("Received alert with data: " + data);
+//        Debug.Log("Received alert with data: " + data);
     }
 
     private void OnSocketOtherDevice(string data)
@@ -245,9 +245,9 @@ public class SocketIOManager : MonoBehaviour
         {
             if (json != null)
             {
-                Debug.Log(json);
+//                Debug.Log(json);
                 this.manager.Socket.Emit(eventName, json);
-                Debug.Log("JSON data sent: " + json);
+//                Debug.Log("JSON data sent: " + json);
             }
             else
             {
@@ -269,9 +269,9 @@ public class SocketIOManager : MonoBehaviour
 
     private void ParseResponse(string jsonObject)
     {
-        Debug.Log(jsonObject);
+//        Debug.Log(jsonObject);
         Root myData = JsonConvert.DeserializeObject<Root>(jsonObject);
-        Debug.Log("initData");
+       
         string id = myData.id;
 
         switch(id)
