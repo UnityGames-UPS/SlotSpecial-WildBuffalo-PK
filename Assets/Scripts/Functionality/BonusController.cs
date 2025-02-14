@@ -170,8 +170,7 @@ public class BonusController : MonoBehaviour
             wheelRoutine.Pause(); // Pause the rotation
 
             // Apply an elastic effect to the paused rotation
-            Wheel_Transform.DORotate(Wheel_Transform.eulerAngles + Vector3.forward * Random.Range(-elasticIntensity, elasticIntensity), 1f)
-                .SetEase(Ease.OutElastic);
+            
         }
         if (Bonus_Text[stopIndex].text.Equals("NO \nBONUS")) 
         {
