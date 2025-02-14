@@ -15,13 +15,13 @@ public class AutoSpinManager : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 
 	public void OnPointerDown(PointerEventData eventData)
     {
-		Debug.Log("run on pointer Down");
+	
 		slotManager.StartSpinRoutine();
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
-		Debug.Log("run on pointer UP");
+		
 		if (!slotManager.IsHoldSpin)
 		{
 			slotManager.StopSpinRoutine();

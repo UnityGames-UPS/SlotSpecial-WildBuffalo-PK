@@ -198,7 +198,7 @@ public class SlotBehaviour : MonoBehaviour
         if(Turbo_Button) Turbo_Button.onClick.AddListener(TurboToggle);
 
         if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.RemoveAllListeners();
-        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.AddListener(() => { StopAutoSpin(); WasAutoSpinOn = false;});
+        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.AddListener(() => { WasAutoSpinOn = false; StopAutoSpin();});
 
         if (FSBoard_Object) FSBoard_Object.SetActive(false);
 
@@ -301,7 +301,10 @@ public class SlotBehaviour : MonoBehaviour
     private IEnumerator StopAutoSpinCoroutine()
     {
         yield return new WaitUntil(() => !IsSpinning);
+        Debug.Log(WasAutoSpinOn);
+        
         ToggleButtonGrp(true);
+      
         if (AutoSpinRoutine != null || tweenroutine != null)
         {
             StopCoroutine(AutoSpinRoutine);
@@ -351,6 +354,7 @@ public class SlotBehaviour : MonoBehaviour
             AutoSpin();
         }
         else{
+            Debug.Log("freespinrounitetogglegroup");
             ToggleButtonGrp(true);
         }
         IsFreeSpin = false;
@@ -701,9 +705,10 @@ public class SlotBehaviour : MonoBehaviour
             wheelFeature = SocketManager.initialData.largeWheelFeature;
         }
         CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, bonus_AnimString, SocketManager.resultData.jackpot);
-        Debug.Log(IsAutoSpin + "  " + SocketManager.resultData.isFreeSpin + "  " + isBonusGame);
-        if (!IsAutoSpin && !SocketManager.resultData.isFreeSpin && !isBonusGame)
+       
+        if (!WasAutoSpinOn && !SocketManager.resultData.isFreeSpin && !isBonusGame)
         {
+            Debug.Log("calledfromhereintweeen");
             ToggleButtonGrp(true);
             IsSpinning = false;
         }
@@ -726,14 +731,16 @@ public class SlotBehaviour : MonoBehaviour
             else if (SocketManager.resultData.freeSpinCount > 0 && SocketManager.resultData.linesToEmit.Count > 0)
             {
                 if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
+                if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
             }
             
         }
         else
         {
             if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
+            if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
         }
-        
+       
         yield return new WaitUntil(() => !CheckPopups);
 
         delayTime = 0.3f;    
@@ -792,19 +799,19 @@ public class SlotBehaviour : MonoBehaviour
         currentBalance = SocketManager.playerdata.Balance;         
         if (!isBonusGame && SocketManager.resultData.linesToEmit.Count == 0)
         {
-            Debug.Log("checkWinPopUpsCalledFromHereISbonusFalse");
+           
             CheckWinPopups();
         }
+        
 
-       
         yield return new WaitUntil(() => spinDone);
 
-     
-        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
+       
+       
         
-        if (!IsAutoSpin && !SocketManager.resultData.isFreeSpin)
+        if (!WasAutoSpinOn && !SocketManager.resultData.isFreeSpin)
         {
-
+            Debug.Log("calledfromhereintweentwo");
             ToggleButtonGrp(true);
             IsSpinning = false;
         }
@@ -814,10 +821,10 @@ public class SlotBehaviour : MonoBehaviour
         }
 
         if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("F3");
-        Debug.Log(SocketManager.playerdata.currentWining + "  "+ SocketManager.playerdata.currentWining.ToString("F3"));
+        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
         if (SocketManager.resultData.isFreeSpin)
         {
-            Debug.Log("calledEarly");
+           
             if (IsFreeSpin)
             {
                 IsFreeSpin = false;
@@ -856,7 +863,7 @@ public class SlotBehaviour : MonoBehaviour
         try
         {
             balance = double.Parse(Balance_text.text);
-            Debug.Log(balance);
+          
         }
         catch (Exception e)
         {
@@ -865,10 +872,10 @@ public class SlotBehaviour : MonoBehaviour
         double initAmount = balance;
     
         balance = balance - bet;
-       
+        if (Balance_text) Balance_text.text = initAmount.ToString("F3");
         BalanceTween =DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
         {
-            if (Balance_text) Balance_text.text = initAmount.ToString("F3");
+            
         });
     }
 
@@ -993,7 +1000,7 @@ public class SlotBehaviour : MonoBehaviour
                 WasAutoSpinOn = true;
                 IsAutoSpin = false;
                 StopCoroutine(AutoSpinCoroutine());
-                Debug.Log("callBoxRoutine");
+               
             }
            
 
@@ -1007,7 +1014,7 @@ public class SlotBehaviour : MonoBehaviour
 
     void callAutoSpinAgain()
     {
-        Debug.Log("callAutoSpinAgain");
+       
         if (AutoSpinStop_Button.gameObject.activeSelf)
         {
             AutoSpin();
