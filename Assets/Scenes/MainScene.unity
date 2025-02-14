@@ -1711,6 +1711,19 @@ MonoBehaviour:
   - {fileID: 1023811550}
   - {fileID: 39205899}
   - {fileID: 412089165}
+  wheelStopos:
+  - 240.183
+  - 210.446
+  - 180.201
+  - 148.418
+  - 119
+  - 90
+  - 61
+  - 31
+  - 1.031
+  - -32
+  - -60
+  - -87
   main_Bonus_Object: {fileID: 1363750574}
   Bonus_Info_Wheel: {fileID: 1711981453}
   Bonus_Info_Group: {fileID: 897223993}
@@ -7992,7 +8005,7 @@ MonoBehaviour:
   uiManager: {fileID: 377874625}
   bonusdata: []
   _jsManager: {fileID: 500036493}
-  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3N2JhM2QzOTgxYmU0MzlkMjkyYzgzYSIsInVzZXJuYW1lIjoiTWVldCIsInJvbGUiOiJwbGF5ZXIiLCJpYXQiOjE3MzkyNjQxNzcsImV4cCI6MTczOTg2ODk3N30.y_VlNr5phdwVZ8JbXg6wLOp6XAzjBy27eg_irqlxjuA
+  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWVkZDMzMzUzOTI1MjFmZWJmYjZiYSIsInVzZXJuYW1lIjoiTWVldCIsInJvbGUiOiJwbGF5ZXIiLCJpYXQiOjE3Mzk1MTM1MTMsImV4cCI6MTc0MDExODMxM30.j4zgBVA2NZkVXLADL5ZDTS2S4Ib83LqB974mtzcZRtA
 --- !u!114 &500036493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24337,7 +24350,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344349078}
-  m_LocalRotation: {x: 0, y: -0, z: 0.008726839, w: -0.9999619}
+  m_LocalRotation: {x: -0, y: -0, z: -0.6942214, w: 0.71976155}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -24355,7 +24368,7 @@ RectTransform:
   - {fileID: 39205897}
   - {fileID: 412089163}
   m_Father: {fileID: 1910405018}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 359}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -87.93}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 2, y: 52}
