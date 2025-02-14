@@ -17,6 +17,8 @@ public class BonusController : MonoBehaviour
     [SerializeField]
     private TMP_Text[] Bonus_Text;
     [SerializeField]
+    private float[] wheelStopos;
+    [SerializeField]
     private CanvasGroup main_Bonus_Object;
     [SerializeField]
     private CanvasGroup Bonus_Info_Wheel;
@@ -168,9 +170,11 @@ public class BonusController : MonoBehaviour
         if (wheelRoutine != null)
         {
             wheelRoutine.Pause(); // Pause the rotation
-
+            Debug.Log(Wheel_Transform.localRotation);
+            float targetRotationZ = wheelStopos[m_SocketManager.resultData.indexToStop];
+            Wheel_Transform.localRotation = Quaternion.Euler(0, 0, targetRotationZ);
             // Apply an elastic effect to the paused rotation
-            
+
         }
         if (Bonus_Text[stopIndex].text.Equals("NO \nBONUS")) 
         {
@@ -206,6 +210,7 @@ public class BonusController : MonoBehaviour
             if (main_Bonus_Object) main_Bonus_Object.gameObject.SetActive(false);
             Debug.Log("checkWinPopUpsCalledFromHereAfterSpin");
             slotManager.CheckWinPopups();
+            slotManager.isBonusGame = false;
             slotManager.spinDone = true;
         });
            
