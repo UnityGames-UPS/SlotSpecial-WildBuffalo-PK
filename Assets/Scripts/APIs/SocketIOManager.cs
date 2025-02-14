@@ -302,7 +302,7 @@ public class SocketIOManager : MonoBehaviour
                 }
             case "ResultData":
                 {
-                    // Debug.Log(jsonObject);
+                     Debug.Log(jsonObject);
                     myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
                     myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(myData.message.GameData.symbolsToEmit);
                     resultData = myData.message.GameData;
