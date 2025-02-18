@@ -163,6 +163,7 @@ public class SlotBehaviour : MonoBehaviour
     private bool hasSkippedAnimation;
     private Coroutine BoxAnimRoutine = null;
     public float delayTime = 0.3f;
+    internal bool isBonusGame = false;
     internal enum bonusWheelType
     {
         none,
@@ -679,12 +680,15 @@ public class SlotBehaviour : MonoBehaviour
             SpinDelay=0.2f;
         }
         List<int> points_anim = null;
-        bool isBonusGame = false;
+        isBonusGame = false;
         CheckPopups = false;
         wheelType = bonusWheelType.none;
         List<int> wheelFeature = new List<int>();
+        spinDone = true;
         if (SocketManager.resultData.isSmallWheelTriggered)
         {
+            Debug.Log("ranSmall");
+            spinDone = false;
             wheelType = bonusWheelType.small;
             isBonusGame = true;
             CheckPopups = true;
@@ -692,6 +696,8 @@ public class SlotBehaviour : MonoBehaviour
         }
         if (SocketManager.resultData.isMediumWheelTriggered)
         {
+            spinDone = false;
+            Debug.Log("ranMedium");
             wheelType = bonusWheelType.medium;
             isBonusGame = true;
             CheckPopups = true;
@@ -699,6 +705,8 @@ public class SlotBehaviour : MonoBehaviour
         }
         if (SocketManager.resultData.isLargeWheelTriggered)
         {
+            spinDone = false;
+            Debug.Log("ranlarge");
             wheelType = bonusWheelType.large;
             isBonusGame = true;
             CheckPopups = true;
@@ -789,10 +797,12 @@ public class SlotBehaviour : MonoBehaviour
             }
         }
         CheckPopups = true;
-        spinDone = true;
+        
+        Debug.Log(wheelFeature);
+        Debug.Log(isBonusGame);
         if (isBonusGame)
         {
-            spinDone = false;
+            
             CheckBonusGame();
         }
         BalanceTween?.Kill();    
@@ -1042,15 +1052,16 @@ public class SlotBehaviour : MonoBehaviour
         int localCount = 0;
         while (true)
         {
-
-            if (SocketManager.resultData.freeSpinCount == 0)
+            Debug.Log(SocketManager.resultData.freeSpinCount + "  " + isBonusGame + "  " + spinDone);
+            if (SocketManager.resultData.freeSpinCount == 0 && !isBonusGame && spinDone)
             {
                 if (WasAutoSpinOn)
                 {
                     if (LineIDs.Count > 1)
                     {
                         if (localCount > 0)
-                        {                       
+                        {
+                            Debug.Log("ranwheelfromwhere");
                             AutoSpin();
                             break;
                         }
