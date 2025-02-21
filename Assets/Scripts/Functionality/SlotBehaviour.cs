@@ -713,17 +713,17 @@ public class SlotBehaviour : MonoBehaviour
             wheelFeature = SocketManager.initialData.largeWheelFeature;
         }
         CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, bonus_AnimString, SocketManager.resultData.jackpot);
-       
-        if (!WasAutoSpinOn && !SocketManager.resultData.isFreeSpin && !isBonusGame)
-        {
-            Debug.Log("calledfromhereintweeen");
-            ToggleButtonGrp(true);
-            IsSpinning = false;
-        }
-        else
-        {
-            IsSpinning = false;
-        }
+
+        //if (!WasAutoSpinOn && !SocketManager.resultData.isFreeSpin && !isBonusGame)
+        //{
+        //    Debug.Log("calledfromhereintweeen");
+        //    ToggleButtonGrp(true);
+        //    IsSpinning = false;
+        //}
+        //else
+        //{
+        //    IsSpinning = false;
+        //}
 
         if (isBonusGame)
         {
