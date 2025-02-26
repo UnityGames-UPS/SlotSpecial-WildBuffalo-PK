@@ -333,6 +333,8 @@ public class UIManager : MonoBehaviour
        
         if (ExtraSpins > 0)
         {
+            if (PaytablePopup_Object) PaytablePopup_Object.SetActive(false);
+            if (SettingsPopup_Object) SettingsPopup_Object.SetActive(false);
             if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
             if (Free_Text) Free_Text.text = ExtraSpins.ToString() + " Free spins awarded.";
             if (MainPopup_Object) MainPopup_Object.SetActive(true);

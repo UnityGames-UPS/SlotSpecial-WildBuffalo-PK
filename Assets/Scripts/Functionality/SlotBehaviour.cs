@@ -882,11 +882,8 @@ public class SlotBehaviour : MonoBehaviour
         double initAmount = balance;
     
         balance = balance - bet;
-        if (Balance_text) Balance_text.text = initAmount.ToString("F3");
-        BalanceTween =DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
-        {
-            
-        });
+        if (Balance_text) Balance_text.text = balance.ToString("F3");
+        
     }
 
     internal void CheckWinPopups()
