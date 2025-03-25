@@ -7605,6 +7605,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 452756049}
+  - component: {fileID: 452756050}
   m_Layer: 0
   m_Name: jsmannager
   m_TagString: Untagged
@@ -7627,6 +7628,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &452756050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452756048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5798079213610429e898d66dddcea3f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &473091591
 GameObject:
   m_ObjectHideFlags: 0
@@ -8036,6 +8049,7 @@ MonoBehaviour:
   uiManager: {fileID: 377874625}
   bonusdata: []
   _jsManager: {fileID: 500036493}
+  JSManager: {fileID: 452756050}
   testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3N2JhM2QzOTgxYmU0MzlkMjkyYzgzYSIsInVzZXJuYW1lIjoiTWVldCIsInJvbGUiOiJwbGF5ZXIiLCJpYXQiOjE3NDI2MjIzMzcsImV4cCI6MTc0MzIyNzEzN30.rM2Wr3CXu_j1cxZ0L-6amxenVsPIhjicqoheZ4dKKTI
 --- !u!114 &500036493
 MonoBehaviour:
