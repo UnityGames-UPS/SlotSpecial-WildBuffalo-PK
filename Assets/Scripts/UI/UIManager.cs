@@ -257,13 +257,12 @@ public class UIManager : MonoBehaviour
             });
 
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.RemoveAllListeners();
-        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(CallOnExitFunction);
-
+        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener((delegate { CallOnExitFunction(); socketManager.ReactNativeCallOnFailedToConnect(); }));
         if (CloseAD_Button) CloseAD_Button.onClick.RemoveAllListeners();
         if (CloseAD_Button) CloseAD_Button.onClick.AddListener(CallOnExitFunction);
 
         if (QuitSplash_button) QuitSplash_button.onClick.RemoveAllListeners();
-        if (QuitSplash_button) QuitSplash_button.onClick.AddListener(delegate { OpenPopup(QuitPopup_Object); });
+        if (QuitSplash_button) QuitSplash_button.onClick.AddListener((delegate { OpenPopup(QuitPopup_Object); }));
 
         if (audioController) audioController.ToggleMute(false);
 
@@ -333,6 +332,8 @@ public class UIManager : MonoBehaviour
        
         if (ExtraSpins > 0)
         {
+            if (PaytablePopup_Object) PaytablePopup_Object.SetActive(false);
+            if (SettingsPopup_Object) SettingsPopup_Object.SetActive(false);
             if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
             if (Free_Text) Free_Text.text = ExtraSpins.ToString() + " Free spins awarded.";
             if (MainPopup_Object) MainPopup_Object.SetActive(true);
