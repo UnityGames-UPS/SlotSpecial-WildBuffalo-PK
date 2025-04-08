@@ -45,7 +45,6 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField] internal JSFunctCalls JSManager;
     [SerializeField]
     private string testToken;
-
     protected string gameID = "SL-WB";
     //protected string gameID = "";
 
@@ -326,7 +325,7 @@ public class SocketIOManager : MonoBehaviour
                     }
                     Application.ExternalCall("window.parent.postMessage", "onExit", "*");
 #if UNITY_WEBGL && !UNITY_EDITOR
-        JSManager.SendCustomMessage("OnEnter");
+        JSManager.SendCustomMessage("OnExit");
 #endif
                     break;
                 }
