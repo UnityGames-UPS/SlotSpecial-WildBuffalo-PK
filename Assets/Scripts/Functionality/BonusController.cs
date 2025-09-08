@@ -54,45 +54,46 @@ public class BonusController : MonoBehaviour
 
     internal void StartBonus(int stop, SlotBehaviour.bonusWheelType wheelType)
     {
-       
+
         ResetColliders();
         if (PopupPanel) PopupPanel.SetActive(false);
         if (Win_Text) Win_Text.gameObject.SetActive(false);
         if (Loose_Transform) Loose_Transform.gameObject.SetActive(false);
         if (_audioManager) _audioManager.SwitchBGSound(true);
 
-       
+
         switch (wheelType)
         {
             case SlotBehaviour.bonusWheelType.small:
-              
-                PopulateWheel(m_SocketManager.initialData.smallWheelFeature);
+
+                PopulateWheel(m_SocketManager.bonusdata.bonus.smallWheelFeature.featureValues);
                 break;
 
             case SlotBehaviour.bonusWheelType.medium:
-                
-                PopulateWheel(m_SocketManager.initialData.mediumWheelFeature);
+
+                PopulateWheel(m_SocketManager.bonusdata.bonus.mediumWheelFeature.featureValues);
                 break;
 
             case SlotBehaviour.bonusWheelType.large:
-               
-                PopulateWheel(m_SocketManager.initialData.largeWheelFeature);       
+
+                PopulateWheel(m_SocketManager.bonusdata.bonus.largeWheelFeature.featureValues);
                 break;
 
             default:
                 return;
         }
-        
+
         stopIndex = stop;
         Bonus_Info_Group.gameObject.SetActive(true);
         Bonus_Info_Wheel.transform.localScale = new Vector2(7.74f, 7.74f);
         Bonus_Info_Wheel.alpha = 0;
-        Bonus_Info_Wheel.transform.DOScale(new Vector2(1.375f, 1.375f), 0.3f).SetEase(Ease.Flash); 
+        Bonus_Info_Wheel.transform.DOScale(new Vector2(1.375f, 1.375f), 0.3f).SetEase(Ease.Flash);
         Bonus_Info_Wheel.DOFade(1f, 0.4f).SetEase(Ease.Linear);
         if (Spin_Button) Spin_Button.interactable = true;
         Spin_Button.gameObject.SetActive(false);
         DOVirtual.DelayedCall(2f, () =>
-        {  Spinbutton();         
+        {
+            Spinbutton();
         });
         //if (slotManager.IsAutoSpin || slotManager.IsFreeSpin)
         //{
@@ -128,33 +129,33 @@ public class BonusController : MonoBehaviour
 
     internal void PopulateWheel(List<int> bonusdata)
     {
-        
+
         for (int i = 0; i < bonusdata.Count; i++)
         {
             if (i < 4)
             {
-                if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i]+" Spins").ToString();
-               
+                if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i] + " Spins").ToString();
+
             }
             else
             {
-                //if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i] * m_SocketManager.initialData.Bets[slotManager.BetCounter] +"X").ToString();
-                if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i]  + "X").ToString();
+
+                if (Bonus_Text[i]) Bonus_Text[i].text = (bonusdata[i] + "X").ToString();
             }
-            
+
         }
     }
 
     private void RotateWheel()
     {
         if (Wheel_Transform) Wheel_Transform.localEulerAngles = new Vector3(0, 0, 359);
-        if (Wheel_Transform) wheelRoutine =  Wheel_Transform.DORotate(new Vector3(0, 0, 0), 0.6f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
+        if (Wheel_Transform) wheelRoutine = Wheel_Transform.DORotate(new Vector3(0, 0, 0), 0.6f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
         _audioManager.PlayBonusAudio("cycleSpin");
     }
 
     private void ResetColliders()
     {
-        foreach(BoxCollider2D col in point_colliders)
+        foreach (BoxCollider2D col in point_colliders)
         {
             col.enabled = false;
         }
@@ -171,12 +172,13 @@ public class BonusController : MonoBehaviour
         {
             wheelRoutine.Pause(); // Pause the rotation
             Debug.Log(Wheel_Transform.localRotation);
-            float targetRotationZ = wheelStopos[m_SocketManager.resultData.indexToStop];
+            Debug.Log("Bonus Test : + Stopping at" + m_SocketManager.resultData.bonusIndex);
+            float targetRotationZ = wheelStopos[m_SocketManager.resultData.bonusIndex];       // hello.   go here      ashu here
             Wheel_Transform.localRotation = Quaternion.Euler(0, 0, targetRotationZ);
             // Apply an elastic effect to the paused rotation
 
         }
-        if (Bonus_Text[stopIndex].text.Equals("NO \nBONUS")) 
+        if (Bonus_Text[stopIndex].text.Equals("NO \nBONUS"))
         {
             if (Loose_Transform) Loose_Transform.gameObject.SetActive(true);
             if (Loose_Transform) Loose_Transform.localScale = Vector3.zero;
@@ -188,21 +190,21 @@ public class BonusController : MonoBehaviour
         {
             if (Win_Text) Win_Text.gameObject.SetActive(true);
             if (Bonus_Text[stopIndex].text.Contains("Spins"))
-            { 
+            {
                 if (Win_Text) Win_Text.text = "You Win " + Bonus_Text[stopIndex].text;
             }
             else
             {
                 if (Win_Text) Win_Text.text = "You Win " + Bonus_Text[stopIndex].text + " Multiplier";
             }
-            
+
             if (PopupPanel) PopupPanel.SetActive(true);
-           // if (Win_Text) Win_Text.transform.DOScale(Vector3.one, 1f);
+            // if (Win_Text) Win_Text.transform.DOScale(Vector3.one, 1f);
             PlayWinLooseSound(true);
         }
         DOVirtual.DelayedCall(3f, () =>
         {
-           
+
             ResetColliders();
             if (_audioManager) _audioManager.SwitchBGSound(false);
             main_Bonus_Object.DOFade(0, 0.5f).SetEase(Ease.Linear).OnComplete(delegate
@@ -213,8 +215,8 @@ public class BonusController : MonoBehaviour
             slotManager.isBonusGame = false;
             slotManager.spinDone = true;
         });
-           
-           
+
+
         });
     }
 
