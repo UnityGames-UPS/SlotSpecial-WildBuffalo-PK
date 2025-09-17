@@ -440,20 +440,21 @@ public class UIManager : MonoBehaviour
 
     private void PopulateSymbolsPayout(Paylines paylines)
     {
+        double betPerLine = socketManager.initialData.bets[slotManager.BetCounter];
         for (int i = 0; i < SymbolsText.Length; i++)
         {
             string text = null;
             if (paylines.symbols[i].multiplier[0] != 0)
             {
-                text += "5x - " + paylines.symbols[i].multiplier[0] + "x";
+                text += "5x - " + paylines.symbols[i].multiplier[0] * betPerLine;
             }
             if (paylines.symbols[i].multiplier[1] != 0)
             {
-                text += "\n4x - " + paylines.symbols[i].multiplier[1] + "x";
+                text += "\n4x - " + paylines.symbols[i].multiplier[1] * betPerLine;
             }
             if (paylines.symbols[i].multiplier[2] != 0)
             {
-                text += "\n3x - " + paylines.symbols[i].multiplier[2] + "x";
+                text += "\n3x - " + paylines.symbols[i].multiplier[2] * betPerLine;
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
@@ -489,10 +490,10 @@ public class UIManager : MonoBehaviour
                 if (Bonus_Text_Panel) Bonus_Text_Panel.text = convertedLine;
 
             }
-            if (paylines.symbols[i].name.ToUpper() == "10")
-            {
-                if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
-            }
+            // if (paylines.symbols[i].name.ToUpper() == "10")
+            // {
+            //     if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
+            // }
             if (paylines.symbols[i].name.ToUpper() == "WILD")
             {
                 string convertedLine = paylines.symbols[i].description.ToString().Replace("BonusSymbol", "<sprite=2>");

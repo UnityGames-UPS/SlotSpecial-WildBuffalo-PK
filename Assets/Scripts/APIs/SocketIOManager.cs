@@ -214,6 +214,7 @@ public class SocketIOManager : MonoBehaviour
     private void OnDisconnected() //Back2 Start
     {
         Debug.LogWarning("⚠️ Disconnected from server.");
+        uiManager.DisconnectionPopup();
         isConnected = false;
         ResetPingRoutine();
     } //Back2 end
@@ -423,7 +424,7 @@ public class SocketIOManager : MonoBehaviour
                         Debug.Log("Dispose my Socket");
                         this.manager.Close();
                     }
-                    Application.ExternalCall("window.parent.postMessage", "OnExit", "*");
+                    //    Application.ExternalCall("window.parent.postMessage", "OnExit", "*");
 #if UNITY_WEBGL && !UNITY_EDITOR
         JSManager.SendCustomMessage("OnExit");
 #endif
@@ -439,7 +440,8 @@ public class SocketIOManager : MonoBehaviour
 
     private void PopulateSlotSocket(List<string> LineIds)
     {
-        Debug.Log("shuffleran");
+        uiManager.RaycastBlocker.SetActive(false);
+        //  Debug.Log("shuffleran");
         slotManager.shuffleInitialMatrix();
         Debug.Log(LineIds.Count);
         for (int i = 0; i < LineIds.Count; i++)
@@ -567,6 +569,7 @@ public class Bonus
     public SmallWheelFeature smallWheelFeature { get; set; }
     public MediumWheelFeature mediumWheelFeature { get; set; }
     public LargeWheelFeature largeWheelFeature { get; set; }
+
 }
 
 public class Features
@@ -631,6 +634,7 @@ public class Root
     public float bonusWinAmount { get; set; }
     public bool isFreeSpinTriggered { get; set; }
     public int freeSpinCountAdded { get; set; }
+    public bool isGoldenBonusTriggered { get; set; }
 }
 public class Symbol
 {
