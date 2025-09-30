@@ -8050,7 +8050,7 @@ MonoBehaviour:
   uiManager: {fileID: 377874625}
   TestSocketURI: http://localhost:5000/
   JSManager: {fileID: 452756050}
-  testToken: 7b3303583eee43a481903012bcbdd197
+  testToken: 15dafc0f3f4d46acbd3a60cf3ff45847
 --- !u!1 &502968745
 GameObject:
   m_ObjectHideFlags: 0

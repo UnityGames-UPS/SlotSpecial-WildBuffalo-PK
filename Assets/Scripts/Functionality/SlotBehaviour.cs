@@ -621,6 +621,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private IEnumerator TweenRoutine()
     {
+        Debug.Log("Dev Test :" + 1);
         if (TempList.Count > 0)
         {
             StopGameAnimation();
@@ -642,6 +643,7 @@ public class SlotBehaviour : MonoBehaviour
 
         ToggleButtonGrp(false);
 
+        //    Debug.Log("Dev Test :" + 2);
         for (int i = 0; i < numberOfSlots; i++)
         {
             InitializeTweening(Slot_Transform[i]);
@@ -655,8 +657,10 @@ public class SlotBehaviour : MonoBehaviour
             balanceDeduction();
         }
 
+        //  Debug.Log("Dev Test :" + 3);
         SocketManager.AccumulateResult(BetCounter);
         yield return new WaitUntil(() => SocketManager.isResultdone);
+        //     Debug.Log("Dev Test :" + 4);
 
         bonus_AnimString.Clear();
         for (int i = 0; i < 4; i++)
@@ -680,6 +684,7 @@ public class SlotBehaviour : MonoBehaviour
                 // Tempimages[j].slotImages[i].GetComponent<Image>().sprite = myImages[resultNum];
             }
         }
+        //   Debug.Log("Dev Test :" + 5);
         boostDone = true;
         if (IsTurboOn || IsFreeSpin)
         {
@@ -702,15 +707,18 @@ public class SlotBehaviour : MonoBehaviour
             StopSpin_Button.gameObject.SetActive(false);
         }
 
+        //    Debug.Log("Dev Test :" + 6);
         for (int i = 0; i < Slot_Transform.Length; i++)
         {
             yield return StopTweening(5, Slot_Transform[i], i, StopSpinToggle);
         }
         StopSpinToggle = false;
 
+        //  Debug.Log("Dev Test :" + 7);
         yield return alltweens[^1].WaitForCompletion();
         KillAllTweens();
 
+        //   Debug.Log("Dev Test :" + 8);
         if (SocketManager.resultData.payload.winAmount > 0)
         {
             SpinDelay = 1.2f;
@@ -719,6 +727,7 @@ public class SlotBehaviour : MonoBehaviour
         {
             SpinDelay = 0.2f;
         }
+        //   Debug.Log("Dev Test :" + 9);
 
 
         CheckForFeaturesAnimation();
@@ -733,11 +742,12 @@ public class SlotBehaviour : MonoBehaviour
         {
 
 
-            if (!IsAutoSpin && !IsFreeSpin && !SocketManager.resultData.isFreeSpinTriggered)
-            {
-                ToggleButtonGrp(true); ;
-            }
+            // if (!IsAutoSpin && !IsFreeSpin && !SocketManager.resultData.isFreeSpinTriggered)
+            // {
+            //     ToggleButtonGrp(true); ;
+            // }
         }
+        //     Debug.Log("Dev Test :" + 10);
         CheckAnimation = true;
         // CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, bonus_AnimString, SocketManager.resultData.jackpot);
         if (SocketManager.resultData.payload.winAmount > 0)
@@ -755,9 +765,11 @@ public class SlotBehaviour : MonoBehaviour
         {
             CheckAnimation = false;
         }
+        //   Debug.Log("Dev Test :" + 11);
         if (TotalWin_text) TotalWin_text.text = SocketManager.resultData.payload.winAmount.ToString("F3");
         if (balance_text) balance_text.text = SocketManager.playerdata.balance.ToString("F3");
         yield return new WaitUntil(() => !CheckAnimation);
+        //   Debug.Log("Dev Test :" + 12);
 
 
         List<int> points_anim = null;
@@ -766,6 +778,7 @@ public class SlotBehaviour : MonoBehaviour
         wheelType = bonusWheelType.none;
         List<int> wheelFeature = new List<int>();
         spinDone = true;
+        //    Debug.Log("Dev Test :" + 13);
         if (SocketManager.resultData.issmallBonusTriggered)
         {
             Debug.Log("ranSmall");
@@ -797,6 +810,7 @@ public class SlotBehaviour : MonoBehaviour
 
 
 
+        //  Debug.Log("Dev Test :" + 14);
         //  Debug.Log("Dev Test :" + 1 + CheckPopups);
 
         if (isBonusGame)
@@ -817,6 +831,8 @@ public class SlotBehaviour : MonoBehaviour
             }
 
         }
+        //   Debug.Log("Dev Test :" + 15);
+
 
         if (TotalWin_text) TotalWin_text.text = SocketManager.resultData.payload.winAmount.ToString("F3");
         if (balance_text) balance_text.text = SocketManager.playerdata.balance.ToString("F3");
@@ -826,6 +842,7 @@ public class SlotBehaviour : MonoBehaviour
             CheckBonusGame();
         }
 
+        //  Debug.Log("Dev Test :" + 16);
         //  Debug.Log("Dev Test :" + 2 + CheckPopups);
 
         yield return new WaitUntil(() => !CheckPopups);
@@ -847,6 +864,7 @@ public class SlotBehaviour : MonoBehaviour
 
             CheckWinPopups();
         }
+        //  Debug.Log("Dev Test :" + 17);
 
         //   Debug.Log("Dev Test :" + 5);
 
@@ -855,6 +873,7 @@ public class SlotBehaviour : MonoBehaviour
 
 
 
+        //   Debug.Log("Dev Test :" + 19);
 
 
 
@@ -882,10 +901,11 @@ public class SlotBehaviour : MonoBehaviour
                 //  yield return new WaitForSeconds(0.1f);
             }
         }
+        //   Debug.Log("Dev Test :" + 20);
         if (!IsAutoSpin && !SocketManager.resultData.isFreeSpin)
         {
             //     Debug.Log("calledfromhereintweentwo");
-            Debug.Log("Dev Test :" + 8 + IsAutoSpin);
+            //    Debug.Log("Dev Test :" + 8 + IsAutoSpin);
             ToggleButtonGrp(true);
             IsSpinning = false;
         }
@@ -893,11 +913,13 @@ public class SlotBehaviour : MonoBehaviour
         {
             IsSpinning = false;
         }
-        Debug.Log("Dev Test :" + 7 + IsAutoSpin);
+
+        //  Debug.Log("Dev Test :" + 21);
         if (IsAutoSpin)
         {
             callAutoSpinAgain();
         }
+        //  Debug.Log("Dev Test :" + 22);
         // else if (!IsFreeSpin && !IsAutoSpin)
         // {
         //     ToggleButtonGrp(true);
@@ -1096,7 +1118,7 @@ public class SlotBehaviour : MonoBehaviour
                     if (IsAutoSpin || IsTurboOn)
                         yield return new WaitForSeconds(0.3f);
                     else
-                        yield return new WaitForSeconds(1f);
+                        yield return new WaitForSeconds(0.6f);
 
                     setactivefalse();
 
@@ -1113,6 +1135,10 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     CheckAnimation = false;
                     yield break; // exits coroutine cleanly
+                }
+                else
+                {
+                    CheckAnimation = false;
                 }
             }
         }
