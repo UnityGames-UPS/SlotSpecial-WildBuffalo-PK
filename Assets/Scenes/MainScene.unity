@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -41315,6 +41314,7 @@ MonoBehaviour:
   PortraitMatchWandH: 0.5
   transitionDuration: 0.2
   waitForRotation: 0.2
+  tabletScale: 0.9
 --- !u!1 &6770202590578165148
 GameObject:
   m_ObjectHideFlags: 0
